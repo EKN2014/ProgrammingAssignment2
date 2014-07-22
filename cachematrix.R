@@ -1,8 +1,12 @@
-#Creates a list of functions that can cache the inverse of a matrix
-#The object does not calculate the inverse, just saves it inside but
-#saves the matrix to variable x and its inverse to variable s in scope.
+# This function creates a special "matrix" object that can cache its inverse
+# The object does not calculate the inverse, just saves it inside. It
+# saves the matrix to variable x and its inverse to variable m in scope.
 
-#This function creates a special "matrix" object that can cache its inverse
+#This is how the function works
+   #1. set the value of the matrix
+   #2. get the value of the matrix
+   #3. set the value of the inverse
+   #4. get the value of the inverse
 
 makeCacheMatrix <- function(x=matrix()) {
    m <- NULL
@@ -11,27 +15,26 @@ makeCacheMatrix <- function(x=matrix()) {
    m <<- NULL
 }
    get <- function() x
-   setmatrix <- function(solve) m <<- solve
-   getmatrix <- function() m
+   setinverse <- function(solve) m <<- solve
+   getinverse <- function() m
    list(set=set, get=get,
-   setmatrix=setmatrix,
-   getmatrix=getmatrix)
+   setinverse=setinverse,
+   getinverse=getinverse)
 }
 
-#Function  computes the inverse of the matrix returned by makeCacheMatrix.
-#Takes the object of that type as an argument 'x', checks if the inverse value is already
-#cached, and if it is returns the cached value; if not, this function calculates the
-#inverse for the matrix saved in the 'x', saves it into 'x' cache using method 'setSolve'
-#and returns the result.
+# This function computes the inverse of the matrix returned by makeCacheMatrix function.
+# It first checks if the inverse has already been calculated. If so, it gets the inverse
+# from the cache and skips the computation. Otherwise, it calculates the inverse of the data
+# in the cache via the setinverse function.
 
 cacheSolve <- function(x, ...) {
-    m <- x$getmatrix()
+    m <- x$getinverse()
     if(!is.null(m)){
       message("getting cached data")
       return(m)
     }
     data <- x$get()
     m <- solve(data, ...)
-    x$setmatrix(m)
+    x$setinverse(m)
     m
  }
